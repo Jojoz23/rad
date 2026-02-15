@@ -49,7 +49,7 @@ def module_hash(module):
 
 def make_dir(dir_path):
     try:
-        os.mkdir(dir_path)
+        os.makedirs(dir_path, exist_ok=True)
     except OSError:
         pass
     return dir_path
@@ -266,7 +266,12 @@ class FrameStack(gym.Wrapper):
         return self._get_obs()
 
     def step(self, action):
-        obs, reward, done, info = self.env.step(action)
+        result = self.env.step(action)
+        if len(result) == 5:
+            obs, reward, terminated, truncated, info = result
+            done = terminated or truncated
+        else:
+            obs, reward, done, info = result
         self._frames.append(obs)
         return self._get_obs(), reward, done, info
 

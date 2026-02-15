@@ -1,7 +1,11 @@
+import os
+# Headless rendering: use EGL (GPU) or osmesa (CPU) when DISPLAY is not set
+if 'MUJOCO_GL' not in os.environ:
+    os.environ['MUJOCO_GL'] = 'egl'
+
 import numpy as np
 import torch
 import argparse
-import os
 import math
 import gym
 import sys
